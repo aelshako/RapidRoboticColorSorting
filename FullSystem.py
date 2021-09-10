@@ -169,14 +169,17 @@ print("\nCamera INIT Complete")
 x_blue = 3 #delta used for the H(Hue) field in HSV(Hue-Saturation-Value) for blue
 x_sat_lower_blue= 90 #lower blue saturation limit for HSV
 x_val_lower_blue = 100 #lower blue value limit for HSV
+
 #Average (experimentally collected) RGB values for blue gumball as it is at the top/middle/bottom of the chute
 blue_mask_top = np.uint8([[[100, 56, 26]]]) 
 blue_mask_mid = np.uint8([[[87, 50, 13]]])  
 blue_mask_bot = np.uint8([[[83, 60, 2]]])   
+
 #average blue mask values in HSV format
 hsvBlue_top = cv2.cvtColor(blue_mask_top,cv2.COLOR_BGR2HSV)
 hsvBlue_mid = cv2.cvtColor(blue_mask_mid,cv2.COLOR_BGR2HSV)
 hsvBlue_bot = cv2.cvtColor(blue_mask_bot,cv2.COLOR_BGR2HSV)
+
 #using numpy array(byte), to hold HSV(Hue-Saturation_Value) ranges
 lowerLimit_blue_top = np.uint8([hsvBlue_top[0][0][0]-x_blue,x_sat_lower_blue,x_val_lower_blue])
 upperLimit_blue_top = np.uint8([hsvblue_top[0][0][0]+x_blue,255,255])
@@ -189,14 +192,17 @@ upperLimit_blue_bot = np.uint8([hsvblue_bot[0][0][0]+x_blue,255,255])
 x_green = 5 #delta used for the H(Hue) field in HSV(Hue-Saturation-Value) for green
 x_sat_lower_green = 90 #lower green saturation limit for HSV
 x_val_lower_green = 90 #lower green value limit for HSV
+
 #Average (experimentally collected) RGB values for green gumball as it is at the top/middle/bottom of the chute
 green_mask_top = np.uint8([[[51, 116, 18]]])
 green_mask_mid = np.uint8([[[54, 86, 25]]])
 green_mask_bot = np.uint8([[[68, 115, 21]]])
+
 #average green mask values in HSV format
 hsvGreen_top = cv2.cvtColor(green_mask_top,cv2.COLOR_BGR2HSV)
 hsvGreen_mid = cv2.cvtColor(green_mask_mid,cv2.COLOR_BGR2HSV)
 hsvGreen_bot = cv2.cvtColor(green_mask_bot,cv2.COLOR_BGR2HSV)
+
 #using numpy array(byte), to hold HSV(Hue-Saturation_Value) ranges
 lowerLimit_green_top = np.uint8([hsvGreen_top[0][0][0]-x_green,x_sat_lower_green,x_val_lower_green])    
 upperLimit_green_top = np.uint8([hsvGreen_top[0][0][0]+x_green,255,255])
@@ -209,14 +215,17 @@ upperLimit_green_bot = np.uint8([hsvGreen_bot[0][0][0]+x_green,255,255])
 x_yellow = 5 #delta used for the H(Hue) field in HSV(Hue-Saturation-Value) for yellow
 x_sat_lower_yellow = 100 #lower yellow saturation limit for HSV
 x_val_lower_yellow = 90  #lower yellow value limit for HSV
+
 #Average (experimentally collected) RGB values for yellow gumball as it is at the top/middle/bottom of the chute
 yellow_mask_top = np.uint8([[[18, 154, 162]]])
 yellow_mask_mid = np.uint8([[[30, 165, 170]]]) 
 yellow_mask_bot = np.uint8([[[50, 140, 140]]])
+
 #average yellow mask values in HSV format
 hsvYellow_top = cv2.cvtColor(yellow_mask_top,cv2.COLOR_BGR2HSV)
 hsvYellow_mid = cv2.cvtColor(yellow_mask_mid,cv2.COLOR_BGR2HSV)
 hsvYellow_bot = cv2.cvtColor(yellow_mask_bot,cv2.COLOR_BGR2HSV)
+
 #using numpy array(byte), to hold HSV(Hue-Saturation_Value) ranges
 lowerLimit_yellow_top = np.uint8([hsvYellow_top[0][0][0]-x_yellow,x_sat_lower_yellow,x_val_lower_yellow])    
 upperLimit_yellow_top = np.uint8([hsvYellow_top[0][0][0]+x_yellow,255,255])
@@ -229,14 +238,17 @@ upperLimit_yellow_bot = np.uint8([hsvYellow_bot[0][0][0]+x_yellow,255,255])
 x_orange = 5 #delta used for the H(Hue) field in HSV(Hue-Saturation-Value) for orange
 x_sat_lower_orange = 100 #lower orange saturation limit for HSV
 x_val_lower_orange = 100 #lower orange value limit for HSV
+
 #Average (experimentally collected) RGB values for orange gumball as it is at the top/middle/bottom of the chute
 orange_mask_top = np.uint8([[[54, 108, 178]]])
 orange_mask_mid = np.uint8([[[54, 99, 149 ]]])
 orange_mask_bot = np.uint8([[[42, 113, 191]]])
+
 #average orange mask values in HSV format
 hsvOrange_top = cv2.cvtColor(orange_mask_top,cv2.COLOR_BGR2HSV)
 hsvOrange_mid = cv2.cvtColor(orange_mask_mid,cv2.COLOR_BGR2HSV)
 hsvOrange_bot = cv2.cvtColor(orange_mask_bot,cv2.COLOR_BGR2HSV)
+
 #using numpy array(byte), to hold HSV(Hue-Saturation_Value) ranges
 lowerLimit_orange_top = np.uint8([hsvOrange_top[0][0][0]-x_orange,x_sat_lower_orange,x_val_lower_orange])    
 upperLimit_orange_top = np.uint8([hsvOrange_top[0][0][0]+x_orange,255,255])
@@ -262,7 +274,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     #image = cv2.GaussianBlur(image, (5,5), 0)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
-    #Blue mask
+    # Blue mask mean computation
     blue_mask_top_ranging = cv2.inRange(hsv, lowerLimit_blue_top, upperLimit_blue_top)
     blue_mask_mid_ranging = cv2.inRange(hsv, lowerLimit_blue_mid, upperLimit_blue_mid)
     blue_mask_bot_ranging = cv2.inRange(hsv, lowerLimit_blue_bot, upperLimit_blue_bot)
@@ -271,7 +283,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     blue_mask_mean = cv2.mean(blue_mask)[0]
     #print("Blue mask: " + str(blue_mask_mean))
  
-    # Green mask 
+    # Green mask mean computation
     green_mask_top_ranging = cv2.inRange(hsv, lowerLimit_green_top, upperLimit_green_top)
     green_mask_mid_ranging = cv2.inRange(hsv, lowerLimit_green_mid, upperLimit_green_mid)
     green_mask_bot_ranging = cv2.inRange(hsv, lowerLimit_green_bot, upperLimit_green_bot)
@@ -280,7 +292,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     green_mask_mean = cv2.mean(green_mask)[0]
     #print("Green mask: " + str(green_mask_mean))
         
-    # Yellow mask
+    # Yellow mask mean computation
     yellow_mask_top_ranging = cv2.inRange(hsv, lowerLimit_yellow_top, upperLimit_yellow_top)
     yellow_mask_mid_ranging = cv2.inRange(hsv, lowerLimit_yellow_mid, upperLimit_yellow_mid)
     yellow_mask_bot_ranging = cv2.inRange(hsv, lowerLimit_yellow_bot, upperLimit_yellow_bot)
@@ -289,7 +301,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     yellow_mask_mean = cv2.mean(yellow_mask)[0]
     #print("Yellow mask: " + str(yellow_mask_mean))
     
-    # Orange mask
+    # Orange mask mean computation
     orange_mask_top_ranging = cv2.inRange(hsv, lowerLimit_orange_top, upperLimit_orange_top)
     orange_mask_mid_ranging = cv2.inRange(hsv, lowerLimit_orange_mid, upperLimit_orange_mid)
     orange_mask_bot_ranging = cv2.inRange(hsv, lowerLimit_orange_bot, upperLimit_orange_bot)
