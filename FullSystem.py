@@ -320,7 +320,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         open_door(in1, in2)
         door1State = 1
       
-    if (green_mask_mean > 0.75) & (door2State==0):
+    if (green_mask_mean > 0.75) & (door2State==0): #If green is detected and the corresponding door is closed
         #print("Green mask: " + str(green_mask_mean))
         green_gumball_counter += 1
         #print(str(green_gumball_counter))
@@ -330,7 +330,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         open_door(in3, in4)
         door2State = 1
         
-    if (yellow_mask_mean > 1) & (door3State == 0):
+    if (yellow_mask_mean > 1) & (door3State == 0): #If yellow is detected and the corresponding door is closed
         print("Yellow mask: " + str(yellow_mask_mean))
         yellow_gumball_counter += 1
         #print(str(yellow_gumball_counter))
@@ -340,7 +340,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
         open_door(in5, in6)
         door3State = 1
         
-    if (orange_mask_mean > 0.75) & (orange_mask_mean < 4) & (door4State == 0):
+    if (orange_mask_mean > 0.75) & (orange_mask_mean < 4) & (door4State == 0): #If orange is detected and the corresponding door is closed
         print("Orange mask: " + str(orange_mask_mean))
         orange_gumball_counter += 1
         #print(str(orange_gumball_counter))
